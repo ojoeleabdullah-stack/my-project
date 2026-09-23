@@ -1,11 +1,13 @@
 import React from 'react';
 
 function Sidebar({ activeScreen, setActiveScreen }) {
-  // A clean list of our application tabs
+  // 📋 Updated array containing ALL 5 screens now!
   const navigationItems = [
-    { id: 'profile', label: 'Player Profile', icon: '👤' },
+    { id: 'feed', label: 'Talent Feed (Insta)', icon: '📱' },
+    { id: 'register', label: 'Create Profile', icon: '📝' },
+    { id: 'profile', label: 'My Vault & Profile', icon: '👤' },
     { id: 'tracking', label: 'Growth Tracker', icon: '📈' },
-    { id: 'scout', label: 'Scout Dashboard', icon: '🔍' }
+    { id: 'scout', label: 'Scout Radar', icon: '🔍' }
   ];
 
   return (
@@ -28,7 +30,7 @@ function Sidebar({ activeScreen, setActiveScreen }) {
                   onClick={() => setActiveScreen(item.id)}
                   className={`flex items-center gap-4 px-4 py-3 rounded-xl cursor-pointer font-medium tracking-wide transition-all duration-200 ease-in-out
                     ${isActive 
-                      ? 'bg-sky-600 text-white shadow-md shadow-sky-600/20 scale-[1.02]' 
+                      ? 'bg-gradient-to-r from-pink-600 to-orange-500 text-white shadow-md shadow-orange-600/10 scale-[1.02]' 
                       : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
                     }`}
                 >
@@ -43,13 +45,13 @@ function Sidebar({ activeScreen, setActiveScreen }) {
 
       {/* Dynamic Profile Footer Status */}
       <div className="border-t border-slate-800 pt-4 px-2 flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-sky-500/20 border border-sky-400 flex items-center justify-center font-bold text-sky-400 text-xs">
-          OA
+        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-500 to-orange-400 flex items-center justify-center font-bold text-white text-xs">
+          LN
         </div>
         <div className="flex flex-col">
-          <span className="text-xs font-semibold text-slate-200">Abdullah</span>
+          <span className="text-xs font-semibold text-slate-200">Lunara Network</span>
           <span className="text-[10px] text-emerald-400 flex items-center gap-1 font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Mode: Active
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Network Live
           </span>
         </div>
       </div>
