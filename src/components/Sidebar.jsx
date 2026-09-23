@@ -1,13 +1,14 @@
 import React from 'react';
 
 function Sidebar({ activeScreen, setActiveScreen }) {
-  // 📋 Updated array containing ALL 5 screens now!
+  // 📋 Array containing ALL 6 screens now!
   const navigationItems = [
     { id: 'feed', label: 'Talent Feed (Insta)', icon: '📱' },
     { id: 'register', label: 'Create Profile', icon: '📝' },
     { id: 'profile', label: 'My Vault & Profile', icon: '👤' },
     { id: 'tracking', label: 'Growth Tracker', icon: '📈' },
-    { id: 'scout', label: 'Scout Radar', icon: '🔍' }
+    { id: 'scout', label: 'Scout Radar', icon: '🔍' },
+    { id: 'verify', label: 'Scout Verification', icon: '🛡️' }
   ];
 
   return (

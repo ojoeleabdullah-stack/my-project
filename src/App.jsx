@@ -5,6 +5,8 @@ import GrowthTracker from './components/GrowthTracker';
 import ScoutDashboard from './components/ScoutDashboard';
 import RegisterProfile from './components/RegisterProfile';
 import VideoInstagramFeed from './components/VideoInstagramFeed';
+import ScoutVerification from './components/ScoutVerification';
+
 
 function App() {
   const [activeScreen, setActiveScreen] = useState('feed'); // Start on the Instagram feed!
@@ -51,6 +53,8 @@ function App() {
         {activeScreen === 'feed' && (
           <VideoInstagramFeed globalVideos={globalVideos} setGlobalVideos={setGlobalVideos} />
         )}
+        {activeScreen === 'verify' && <ScoutVerification />}
+
         
         {activeScreen === 'register' && (
           <RegisterProfile setPlayer={setPlayer} setActiveScreen={setActiveScreen} />
