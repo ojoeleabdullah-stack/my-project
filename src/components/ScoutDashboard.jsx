@@ -85,7 +85,7 @@ function ScoutDashboard() {
                   onClick={() => triggerChatOpen(talent.name, talent.club)}
                   className="bg-gradient-to-r from-pink-600 to-orange-500 text-white font-bold text-xs px-4 py-3 rounded-xl transition-all shadow-sm active:scale-95"
                 >
-                  Open Chat 💬
+                  Open Chat
                 </button>
               </div>
             </div>
