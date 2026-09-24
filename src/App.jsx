@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Sidebar from './components/Sidebar';
+import Navigation from './components/Navigation';
+import AuthPortal from './components/AuthPortal';
 import PlayerProfile from './components/PlayerProfile';
 import GrowthTracker from './components/GrowthTracker';
 import ScoutDashboard from './components/ScoutDashboard';
@@ -7,11 +8,16 @@ import RegisterProfile from './components/RegisterProfile';
 import VideoInstagramFeed from './components/VideoInstagramFeed';
 import ScoutVerification from './components/ScoutVerification';
 
-
 function App() {
-  const [activeScreen, setActiveScreen] = useState('feed'); // Start on the Instagram feed!
+  // Global user connection tracking
+  const [userSession, setUserSession] = useState({
+    isLoggedIn: false,
+    role: 'player' // 'player' or 'scout'
+  });
 
-  // Global player state (starts with yours)
+  const [activeScreen, setActiveScreen] = useState('feed');
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Controls desktop drawer toggle
+
   const [player, setPlayer] = useState({
     name: "Ojoele Abdullah",
     position: "Midfielder / Winger",
@@ -22,7 +28,6 @@ function App() {
     minutesPlayed: 450
   });
 
-  // Global shared video vault (The public Instagram feed data)
   const [globalVideos, setGlobalVideos] = useState([
     { 
       id: 1, 
@@ -42,33 +47,31 @@ function App() {
     }
   ]);
 
+  // If user hasn't authenticated, lock the screens and show the Login/Sign-up screen
+  if (!userSession.isLoggedIn) {
+    return <AuthPortal setUserSession={setUserSession} />;
+  }
+
   return (
-    <div className="flex min-h-screen bg-slate-950 font-sans text-slate-100">
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans pb-20 md:pb-0">
       
-      {/* Sidebar Component */}
-      <Sidebar activeScreen={activeScreen} setActiveScreen={setActiveScreen} />
+      {/* 🧭 MODERN CONDENSED CONTROLLER NAVIGATION */}
+      <Navigation 
+        activeScreen={activeScreen} 
+        setActiveScreen={setActiveScreen} 
+        sidebarOpen={sidebarOpen} 
+        setSidebarOpen={setSidebarOpen} 
+        setUserSession={setUserSession}
+      />
 
-      {/* Main Screen Router Routing Panel */}
-      <main className="flex-1 p-4 md:p-8 overflow-y-auto max-h-screen">
-        {activeScreen === 'feed' && (
-          <VideoInstagramFeed globalVideos={globalVideos} setGlobalVideos={setGlobalVideos} />
-        )}
-        {activeScreen === 'verify' && <ScoutVerification />}
-
-        
-        {activeScreen === 'register' && (
-          <RegisterProfile setPlayer={setPlayer} setActiveScreen={setActiveScreen} />
-        )}
-
-        {activeScreen === 'profile' && (
-          <PlayerProfile player={player} globalVideos={globalVideos} setGlobalVideos={setGlobalVideos} />
-        )}
-        
-        {activeScreen === 'tracking' && (
-          <GrowthTracker player={player} setPlayer={setPlayer} />
-        )}
-
+      {/* 💻 MAIN FLUID SCROLL PANELS */}
+      <main className="max-w-7xl mx-auto p-4 md:p-8">
+        {activeScreen === 'feed' && <VideoInstagramFeed globalVideos={globalVideos} setGlobalVideos={setGlobalVideos} />}
+        {activeScreen === 'register' && <RegisterProfile setPlayer={setPlayer} setActiveScreen={setActiveScreen} />}
+        {activeScreen === 'profile' && <PlayerProfile player={player} globalVideos={globalVideos} setGlobalVideos={setGlobalVideos} />}
+        {activeScreen === 'tracking' && <GrowthTracker player={player} setPlayer={setPlayer} />}
         {activeScreen === 'scout' && <ScoutDashboard />}
+        {activeScreen === 'verify' && <ScoutVerification />}
       </main>
     </div>
   );
