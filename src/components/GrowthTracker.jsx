@@ -86,7 +86,7 @@ function GrowthTracker({ player, setPlayer }) {
                 placeholder="e.g., 2" 
                 value={metricValue}
                 onChange={(e) => setMetricValue(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/20"
+                className="w-full font-semibold px-3 text-black py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/20"
               />
             </div>
 
