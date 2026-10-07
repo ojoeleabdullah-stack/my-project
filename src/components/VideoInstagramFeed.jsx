@@ -1,6 +1,6 @@
 import React from 'react';
 
-function VideoInstagramFeed({ globalVideos, setGlobalVideos }) {
+function VideoInstagramFeed({ globalVideos, setGlobalVideos, userRole }) {
   
   const handleLikeToggle = (id) => {
     setGlobalVideos(globalVideos.map(post => {
@@ -15,10 +15,19 @@ function VideoInstagramFeed({ globalVideos, setGlobalVideos }) {
     }));
   };
 
+  // 🛡️ ROLE PRIVACY FILTER LAYER
+  // If user is a player, we filter out any videos marked as 'restricted' or confidential scout-only logs.
+  const visibleFeed = globalVideos.filter(post => {
+    if (post.isConfidentialScoutOnly && userRole !== 'scout') {
+      return false; // Blocks players from reading or seeing this item
+    }
+    return true; // Allows entry to pass through the security filter
+  });
+
   return (
     <div className="max-w-md mx-auto md:py-4 space-y-4 md:space-y-6">
       
-      {globalVideos.map((post) => (
+      {visibleFeed.map((post) => (
         <article 
           key={post.id} 
           className="bg-black md:bg-slate-900 md:border md:border-slate-800 md:rounded-3xl overflow-hidden shadow-2xl relative w-full aspect-[9/16] max-h-[85vh] md:max-h-[750px] flex flex-col justify-between"
@@ -34,7 +43,11 @@ function VideoInstagramFeed({ globalVideos, setGlobalVideos }) {
               <div>
                 <h4 className="font-bold text-xs text-slate-100 flex items-center gap-1">
                   {post.playerName} 
-                  <span className="text-[9px] text-sky-400 bg-sky-500/10 px-1.5 py-0.2 rounded border border-sky-400/20">PROSPECT</span>
+                  {post.isConfidentialScoutOnly ? (
+                    <span className="text-[8px] text-amber-400 bg-amber-500/10 px-1.5 py-0.2 rounded border border-amber-400/20 font-mono">SCOUT PRIVATE LOG</span>
+                  ) : (
+                    <span className="text-[9px] text-sky-400 bg-sky-500/10 px-1.5 py-0.2 rounded border border-sky-400/20">PROSPECT</span>
+                  )}
                 </h4>
                 <p className="text-[9px] text-slate-300 font-medium">🏟️ {post.club}</p>
               </div>
@@ -104,6 +117,9 @@ function VideoInstagramFeed({ globalVideos, setGlobalVideos }) {
         </article>
       ))}
 
+      {visibleFeed.length === 0 && (
+        <p className="text-center text-sm text-slate-500 py-10">No public clips matching your profile filters.</p>
+      )}
     </div>
   );
 }

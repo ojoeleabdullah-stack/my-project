@@ -30,28 +30,38 @@ function App() {
   });
 
   const [globalVideos, setGlobalVideos] = useState([
-    { 
-      id: 1, 
-      playerName: "Chidi Okafor", 
-      title: "Explosive Striker Drills ⚡ #Striker #NaijaTalent", 
-      url: "https://w3schools.com",
-      likes: 124,
-      commentsCount: 14,
-      club: "Enugu Rangers Academy",
-      isLiked: false
-    },
-    { 
-      id: 2, 
-      playerName: "Ojoele Abdullah", 
-      title: "Morning Cone Drills & Agility work at Lagos National Stadium", 
-      url: "https://w3schools.com",
-      likes: 89,
-      commentsCount: 6,
-      club: "Lagos Football Academy",
-      isLiked: false
-    }
-  ]);
-
+  { 
+    id: 1, 
+    playerName: "Chidi Okafor", 
+    title: "Explosive Striker Drills ⚡ #Striker #NaijaTalent", 
+    url: "https://w3schools.com",
+    likes: 124,
+    commentsCount: 14,
+    club: "Enugu Rangers Academy",
+    isLiked: false
+  },
+  { 
+    id: 2, 
+    playerName: "Ojoele Abdullah", 
+    title: "Morning Cone Drills & Agility work at Lagos National Stadium", 
+    url: "https://w3schools.com",
+    likes: 89,
+    commentsCount: 6,
+    club: "Lagos Football Academy",
+    isLiked: false
+  },
+  { 
+    id: 3, 
+    playerName: "UEFA Technical Scout", 
+    title: "🔒 CONFIDENTIAL REPORT: Technical analysis on Lagos Academy prospects for European Draft.", 
+    url: "https://w3schools.com",
+    likes: 12,
+    commentsCount: 2,
+    club: "Euro Scouting Network",
+    isLiked: false,
+    isConfidentialScoutOnly: true // <-- triggers the rejection layer for non-scouts
+  }
+]);
   if (!userSession.isLoggedIn) {
     return <AuthPortal setUserSession={setUserSession} setActiveScreen={setActiveScreen} />;
   }
@@ -70,14 +80,22 @@ function App() {
       />
 
       {/* 💻 CONTROLLER MAIN SCROLL VIEWPORT */}
-      <main className="max-w-7xl mx-auto p-0 md:p-8">
-        {activeScreen === 'feed' && <VideoInstagramFeed globalVideos={globalVideos} setGlobalVideos={setGlobalVideos} />}
-        {activeScreen === 'register' && <RegisterProfile setPlayer={setPlayer} setActiveScreen={setActiveScreen} />}
-        {activeScreen === 'profile' && <PlayerProfile player={player} globalVideos={globalVideos} setGlobalVideos={setGlobalVideos} />}
-        {activeScreen === 'tracking' && <GrowthTracker player={player} setPlayer={setPlayer} />}
-        {activeScreen === 'scout' && <ScoutDashboard />}
-        {activeScreen === 'verify' && <ScoutVerification />}
-      </main>
+  <main className="max-w-7xl mx-auto p-0 md:p-8">
+  {activeScreen === 'register' && <RegisterProfile setPlayer={setPlayer} setActiveScreen={setActiveScreen} />}
+  {activeScreen === 'profile' && <PlayerProfile player={player} globalVideos={globalVideos} setGlobalVideos={setGlobalVideos} />}
+  {activeScreen === 'tracking' && <GrowthTracker player={player} setPlayer={setPlayer} />}
+  {activeScreen === 'scout' && <ScoutDashboard />}
+  {activeScreen === 'verify' && <ScoutVerification />}
+
+  {/* Feed — passes userRole for security filtering */}
+  {activeScreen === 'feed' && (
+    <VideoInstagramFeed
+      globalVideos={globalVideos}
+      setGlobalVideos={setGlobalVideos}
+      userRole={userSession.role}
+    />
+  )}
+  </main>
     </div>
   );
 }
