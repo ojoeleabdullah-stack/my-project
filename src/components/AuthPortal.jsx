@@ -6,22 +6,26 @@ function AuthPortal({ setUserSession, setActiveScreen }) {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('player'); // Tracking the primary user role selection
 
-  const handleAuthAction = (e) => {
+    const handleAuthAction = (e) => {
     e.preventDefault();
     if (!email || !password) return alert("Please fill out your credentials!");
 
-    // Inject active user attributes directly into framework engine context
     setUserSession({
       isLoggedIn: true,
       role: role,
       email: email
     });
 
-    // UX Rule: Scouts auto-land on the Scout Radar, players land on the Video Feed
+    // 🧠 AUTOMATED SECURITY ROUTING
     if (role === 'scout') {
-      setActiveScreen('scout');
+      setActiveScreen('scout'); // Scouts jump immediately to their data panels
     } else {
-      setActiveScreen('feed');
+      // If player profile is not set up yet, drop them directly onto the registration workflow sheet!
+      if (!isProfileActivated) {
+        setActiveScreen('register');
+      } else {
+        setActiveScreen('feed');
+      }
     }
   };
 
