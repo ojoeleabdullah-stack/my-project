@@ -79,8 +79,8 @@ function AuthPortal({ setUserSession, setActiveScreen }) {
               value={role} onChange={(e) => setRole(e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-500/40"
             >
-              <option value="player">🇳🇬 Grassroot Player / Academy</option>
-              <option value="scout">🇪🇺 International Scout / Agent</option>
+              <option value="player"> Grassroot Player / Academy</option>
+              <option value="scout"> International Scout / Agent</option>
             </select>
           </div>
 
