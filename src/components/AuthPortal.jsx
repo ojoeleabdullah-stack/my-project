@@ -34,7 +34,7 @@ function AuthPortal({ setUserSession, setActiveScreen }) {
       <div className="w-full max-w-md bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl space-y-6">
         
         <div className="text-center">
-          <span className="text-4xl">🌙</span>
+          <span className="text-4xl"></span>
           <h1 className="text-3xl font-black bg-gradient-to-r from-pink-500 via-purple-500 to-orange-500 bg-clip-text text-transparent mt-2">LUNARA</h1>
           <p className="text-xs text-slate-400 mt-1">Connecting Nigerian Grassroot Talent to the Football World.</p>
         </div>
