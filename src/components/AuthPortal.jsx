@@ -79,6 +79,7 @@ function AuthPortal({ setUserSession, setActiveScreen, isProfileActivated }) {
               <option value="player">Grassroots Player / Athlete</option>
               <option value="coach">Academy Coach / Team Manager</option>
               <option value="scout">Professional Recruiter / Scout</option>
+              <option value="admin"> Platform Infrastructure Administrator</option>
             </select>
           </div>
 

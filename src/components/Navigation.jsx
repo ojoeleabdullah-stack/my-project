@@ -2,18 +2,15 @@ import React from 'react';
 
 function Navigation({ activeScreen, setActiveScreen, sidebarOpen, setSidebarOpen, setUserSession, userRole, isProfileActivated }) {
   
-  // Strict UI Mapping Strategy derived from PRD Functional Requirements Matrix (FR-01 to FR-11)
-  const allNavItems = [
-    // Global Access Module
-    { id: 'scout', label: 'Talent Radar', icon: '🔍', viewableBy: ['player', 'coach', 'scout'] },
-    
-    // Scout Protected Actions Matrix
+  // Strict UI Mapping Strategy 
+   const allNavItems = [
+    { id: 'scout', label: 'Talent Radar', icon: '🔍', viewableBy: ['player', 'coach', 'scout', 'admin'] },
     { id: 'verify', label: 'Compliance ID', icon: '🛡️', viewableBy: ['scout'] },
-    
-    // Coach Protected Actions Matrix
     { id: 'team', label: 'Roster Hub', icon: '📋', viewableBy: ['coach'] },
     
-    // Player Protected Actions Matrix
+    // 🛠️ ADMIN EXCLUSIVE LINK REGISTRATION
+    { id: 'admin', label: 'Safety Moderation', icon: '🛠️', viewableBy: ['admin'] },
+
     { id: 'register', label: 'Setup Card', icon: '📝', viewableBy: userRole === 'player' && !isProfileActivated ? ['player'] : [] },
     { id: 'profile', label: 'My Profile', icon: '👤', viewableBy: userRole === 'player' && isProfileActivated ? ['player'] : [] },
     { id: 'tracking', label: 'Metric Logs', icon: '📈', viewableBy: userRole === 'player' && isProfileActivated ? ['player'] : [] }
