@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
-function AuthPortal({ setUserSession, setActiveScreen }) {
+function AuthPortal({ setUserSession, setActiveScreen, isProfileActivated }) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('player'); // Tracking the primary user role selection
+  const [role, setRole] = useState('player');
 
-    const handleAuthAction = (e) => {
+  const handleAuthAction = (e) => {
     e.preventDefault();
-    if (!email || !password) return alert("Please fill out your credentials!");
+    if (!email || !password) return alert("Please enter your credentials.");
 
     setUserSession({
       isLoggedIn: true,
@@ -16,41 +16,39 @@ function AuthPortal({ setUserSession, setActiveScreen }) {
       email: email
     });
 
-    // 🧠 AUTOMATED SECURITY ROUTING
     if (role === 'scout') {
-      setActiveScreen('scout'); // Scouts jump immediately to their data panels
+      setActiveScreen('scout');
+    } else if (role === 'coach') {
+      setActiveScreen('team');
     } else {
-      // If player profile is not set up yet, drop them directly onto the registration workflow sheet!
-      if (!isProfileActivated) {
-        setActiveScreen('register');
-      } else {
-        setActiveScreen('feed');
-      }
+      setActiveScreen(isProfileActivated ? 'profile' : 'register');
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4 font-sans text-white">
-      <div className="w-full max-w-md bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl space-y-6">
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4 font-sans text-slate-100">
+      <div className="w-full max-w-md bg-slate-900 border border-slate-800 p-8 rounded-xl shadow-xl space-y-6">
         
-        <div className="text-center">
-          <span className="text-4xl"></span>
-          <h1 className="text-3xl font-black bg-gradient-to-r from-pink-500 via-purple-500 to-orange-500 bg-clip-text text-transparent mt-2">LUNARA</h1>
-          <p className="text-xs text-slate-400 mt-1">Connecting Nigerian Grassroot Talent to the Football World.</p>
+        {/* Formal Header Logo */}
+        <div className="text-center space-y-2">
+          <h1 className="text-3xl font-black tracking-widest text-white font-mono">LUNARA</h1>
+          <div className="h-0.5 w-12 bg-sky-500 mx-auto"></div>
+          <p className="text-xs text-slate-400 font-medium tracking-wide uppercase">Sports Technology / Talent Discovery</p>
         </div>
 
-        <div className="flex bg-slate-950 p-1.5 rounded-xl border border-slate-800/80">
+        {/* PRD Compliant Segmented Switcher */}
+        <div className="flex bg-slate-950 p-1 rounded-lg border border-slate-800">
           <button 
             type="button"
             onClick={() => setIsSignUp(false)}
-            className={`flex-1 text-center py-2 text-xs font-bold rounded-lg transition-all ${!isSignUp ? 'bg-gradient-to-r from-pink-600 to-orange-500 text-white' : 'text-slate-400'}`}
+            className={`flex-1 text-center py-2 text-xs font-bold rounded transition-all ${!isSignUp ? 'bg-sky-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
           >
             Sign In
           </button>
           <button 
             type="button"
             onClick={() => setIsSignUp(true)}
-            className={`flex-1 text-center py-2 text-xs font-bold rounded-lg transition-all ${isSignUp ? 'bg-gradient-to-r from-pink-600 to-orange-500 text-white' : 'text-slate-400'}`}
+            className={`flex-1 text-center py-2 text-xs font-bold rounded transition-all ${isSignUp ? 'bg-sky-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'}`}
           >
             Create Account
           </button>
@@ -58,34 +56,34 @@ function AuthPortal({ setUserSession, setActiveScreen }) {
 
         <form onSubmit={handleAuthAction} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1">Email Address</label>
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Email Address</label>
             <input 
-              type="email" placeholder="name@clubfc.com" value={email} onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-500/40"
+              type="email" placeholder="scout@clubfc.com" value={email} onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-sky-500 transition-colors"
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1">Password</label>
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Password</label>
             <input 
               type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-orange-500/40"
+              className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-sky-500 transition-colors"
             />
           </div>
 
-          {/* ALWAYS allow selecting role so users can choose how to login/simulate sessions */}
           <div>
-            <label className="block text-xs font-semibold text-slate-400 mb-1">Login Session Mode</label>
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Platform Identity Context</label>
             <select 
               value={role} onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-300 focus:outline-none focus:ring-2 focus:ring-orange-500/40"
+              className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-800 text-sm text-slate-300 focus:outline-none focus:border-sky-500 transition-colors bg-none"
             >
-              <option value="player"> Grassroot Player / Academy</option>
-              <option value="scout"> International Scout / Agent</option>
+              <option value="player">Grassroots Player / Athlete</option>
+              <option value="coach">Academy Coach / Team Manager</option>
+              <option value="scout">Professional Recruiter / Scout</option>
             </select>
           </div>
 
-          <button type="submit" className="w-full bg-gradient-to-r from-pink-600 to-orange-500 hover:from-pink-700 hover:to-orange-600 font-bold py-3 rounded-xl transition-all shadow-lg active:scale-95 text-sm text-white">
-            {isSignUp ? 'Register Network Account' : 'Secure Sign In'}
+          <button type="submit" className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2.5 rounded text-sm transition-colors uppercase tracking-wider shadow">
+            {isSignUp ? 'Register Credentials' : 'Authenticate Session'}
           </button>
         </form>
       </div>

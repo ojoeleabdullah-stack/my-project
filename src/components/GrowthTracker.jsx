@@ -1,99 +1,99 @@
 import React, { useState } from 'react';
 
 function GrowthTracker({ player, setPlayer }) {
-  // Local form states to capture input values
   const [metricType, setMetricType] = useState('goals');
   const [metricValue, setMetricValue] = useState('');
+  
+  // Track continuous records stream to prevent unverified entries confusion
+  const [historyLogs, setHistoryLogs] = useState([
+    { id: 1, type: "Goals", amount: 12, date: "2026-10-15", status: "Coach Confirmed" },
+    { id: 2, type: "Assists", amount: 8, date: "2026-10-18", status: "Self Reported" }
+  ]);
 
-  // Handle form submission
-  const handleLogMetrics = (e) => {
+  const handleLogSubmit = (e) => {
     e.preventDefault();
-    
-    const parsedValue = parseInt(metricValue);
-    if (isNaN(parsedValue) || parsedValue <= 0) {
-      return alert("Please enter a valid positive number!");
-    }
+    const count = parseInt(metricValue);
+    if (isNaN(count) || count <= 0) return alert("Enter a valid integer quantity.");
 
-    // Update the player stats based on what was selected in the dropdown
+    // Update active telemetry state structures safely
     if (metricType === 'goals') {
-      setPlayer({ ...player, goals: player.goals + parsedValue });
-    } else if (metricType === 'assists') {
-      setPlayer({ ...player, assists: player.assists + parsedValue });
-    } else if (metricType === 'minutes') {
-      setPlayer({ ...player, minutesPlayed: player.minutesPlayed + parsedValue });
+      setPlayer({
+        ...player,
+        metrics: { ...player.metrics, goals: { count: player.metrics.goals.count + count, confirmedByCoach: false } }
+      });
+    } else {
+      setPlayer({
+        ...player,
+        metrics: { ...player.metrics, assists: { count: player.metrics.assists.count + count, confirmedByCoach: false } }
+      });
     }
 
-    // Clear input field after tracking successfully updates
+    const newLog = {
+      id: Date.now(),
+      type: metricType === 'goals' ? 'Goals' : 'Assists',
+      amount: count,
+      date: new Date().toISOString().split('T')[0],
+      status: "Self Reported" // Self-reported marker enforced until coach authorization matches (PRD 6.4)
+    };
+
+    setHistoryLogs([newLog, ...historyLogs]);
     setMetricValue('');
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
-      {/* HEADER TITLE */}
-      <div className="bg-white border border-slate-100 rounded-2xl p-6 shadow-sm">
-        <h1 className="text-2xl font-black text-slate-800 tracking-tight">📈 Growth & Performance Tracker</h1>
-        <p className="text-sm text-slate-400 mt-1">Log updates from recent training matches to elevate your metric scores instantly.</p>
+    <div className="max-w-4xl mx-auto space-y-6 text-slate-100 font-sans animate-fade-in">
+      <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl shadow-md">
+        <h1 className="text-xl font-bold tracking-tight text-white font-mono uppercase">Performance Tracking Ledger</h1>
+        <p className="text-xs text-slate-400 mt-0.5">Document training metrics. Self-reported records display secondary warnings until coach validation overrides.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
-        {/* STATS ANALYTICS DISPLAY PANEL (Left 2 columns) */}
-        <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {/* Card 1: Goals */}
-          <div className="bg-white p-5 border border-slate-100 rounded-2xl shadow-sm text-center">
-            <span className="text-2xl">⚽</span>
-            <div className="text-xs uppercase tracking-widest text-slate-400 font-bold mt-2">Total Goals</div>
-            <div className="text-3xl font-black text-slate-800 mt-1">{player.goals}</div>
-          </div>
-
-          {/* Card 2: Assists */}
-          <div className="bg-white p-5 border border-slate-100 rounded-2xl shadow-sm text-center">
-            <span className="text-2xl">👟</span>
-            <div className="text-xs uppercase tracking-widest text-slate-400 font-bold mt-2">Total Assists</div>
-            <div className="text-3xl font-black text-slate-800 mt-1">{player.assists || 8}</div>
-          </div>
-
-          {/* Card 3: Play Time */}
-          <div className="bg-white p-5 border border-slate-100 rounded-2xl shadow-sm text-center">
-            <span className="text-2xl">⏱️</span>
-            <div className="text-xs uppercase tracking-widest text-slate-400 font-bold mt-2">Minutes Played</div>
-            <div className="text-3xl font-black text-slate-800 mt-1">{player.minutesPlayed || 450} mins</div>
-          </div>
-        </div>
-
-        {/* INTERACTIVE TRACKING INTERFACE FORM (Right 1 column) */}
+        {/* DATA SUBMISSION CONTROL CONSOLE */}
         <div className="md:col-span-1">
-          <form onSubmit={handleLogMetrics} className="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm space-y-4">
-            <h3 className="font-bold text-slate-800 text-base">Log Match Activity</h3>
+          <form onSubmit={handleLogSubmit} className="bg-slate-900 border border-slate-800 p-5 rounded-xl space-y-4">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 font-mono">Log Activity Event</h3>
             
             <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1">Select Metric</label>
-              <select 
-                value={metricType} 
-                onChange={(e) => setMetricType(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm bg-slate-50 text-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-500/20"
-              >
-                <option value="goals">⚽ Goals Scored</option>
-                <option value="assists">👟 Assists Made</option>
-                <option value="minutes">⏱️ Minutes Played</option>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Target Dimension</label>
+              <select value={metricType} onChange={(e) => setMetricType(e.target.value)} className="w-full bg-slate-950 border border-slate-800 px-3 py-2 rounded text-xs text-slate-300 focus:outline-none">
+                <option value="goals">Goals Scored</option>
+                <option value="assists">Assists Cleared</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1">Count / Amount</label>
-              <input 
-                type="number" 
-                placeholder="e.g., 2" 
-                value={metricValue}
-                onChange={(e) => setMetricValue(e.target.value)}
-                className="w-full font-semibold px-3 text-black py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/20"
-              />
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Quantity Count</label>
+              <input type="number" value={metricValue} onChange={(e) => setMetricValue(e.target.value)} placeholder="e.g., 1" className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:border-sky-500" />
             </div>
 
-            <button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all">
-              Update Performance Stats
+            <button type="submit" className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2 rounded text-xs transition-colors uppercase tracking-wider">
+              Append Metric to Record
             </button>
           </form>
+        </div>
+
+        {/* METRIC STREAM AUDITING LIST */}
+        <div className="md:col-span-2 space-y-3">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Sequential Performance Logs</h3>
+          
+          <div className="space-y-2">
+            {historyLogs.map(log => (
+              <div key={log.id} className="p-4 bg-slate-900 border border-slate-800 rounded-xl flex justify-between items-center text-xs font-mono">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-white text-sm">+{log.amount} {log.type}</span>
+                    <span className={`text-[8px] font-bold px-1.5 py-0.2 rounded border
+                      ${log.status === 'Coach Confirmed' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'}`}>
+                      {log.status}
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-slate-500 mt-1">Logged timestamp entry date: {log.date}</p>
+                </div>
+                <span className="text-slate-400 text-[11px] font-bold">MVP System Node</span>
+              </div>
+            ))}
+          </div>
         </div>
 
       </div>
