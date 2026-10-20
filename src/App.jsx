@@ -35,11 +35,12 @@ function App() {
     }
   });
 
-  // Roster repository managed by Coaches
-  const [teamRoster, setTeamRoster] = useState([
-    { id: 1, name: "Chidi Okafor", position: "Striker", ageBand: "U-18", status: "Verified" },
-    { id: 2, name: "Tunde Bakare", position: "Goalkeeper", ageBand: "U-20", status: "Pending" }
-  ]);
+ // TeamRoster state variable:
+const [teamRoster, setTeamRoster] = useState([
+  { id: 1, name: "Chidi Okafor", position: "Striker", ageBand: "U-18", goalsReported: 14, assistsReported: 3, status: "Verified" },
+  { id: 2, name: "Tunde Bakare", position: "Goalkeeper", ageBand: "U-20", goalsReported: 0, assistsReported: 0, status: "Unverified" }
+]);
+
 
   if (!userSession.isLoggedIn) {
     return (
