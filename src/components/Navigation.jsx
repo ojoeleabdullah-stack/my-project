@@ -38,7 +38,7 @@ function Navigation({ activeScreen, setActiveScreen, sidebarOpen, setSidebarOpen
           onClick={() => setUserSession({ isLoggedIn: false, role: 'player', email: '' })} 
           className="text-xs bg-slate-950 border border-slate-800 hover:border-rose-900 text-slate-400 hover:text-rose-400 px-3 py-1.5 rounded transition-all font-medium uppercase tracking-wider"
         >
-          Disconnect
+          Sign Out
         </button>
       </header>
 
