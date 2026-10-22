@@ -2,7 +2,7 @@ import React from 'react';
 
 function AdminModeration({ tickets, setTickets }) {
   
-  // Action Handler to resolve/dismiss safety alerts (PRD Section 11)
+  // Action Handler to resolve/dismiss safety alerts
   const handleResolveTicket = (id, actionTaken) => {
     alert(`Security Action Enforced: Ticket #${id} marked as [${actionTaken}]`);
     setTickets(tickets.map(ticket => {
@@ -16,7 +16,7 @@ function AdminModeration({ tickets, setTickets }) {
   return (
     <div className="max-w-5xl mx-auto space-y-6 text-slate-100 font-sans">
       
-      {/* 📡 CONTROL ROOM TITLE */}
+      {/* CONTROL ROOM TITLE */}
       <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl shadow-md flex justify-between items-center">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-white font-mono uppercase">Platform Safety & Moderation Engine</h1>
@@ -27,7 +27,7 @@ function AdminModeration({ tickets, setTickets }) {
         </div>
       </div>
 
-      {/* 📑 TICKETS CENTRAL MATRIX */}
+      {/* TICKETS CENTRAL MATRIX */}
       <div className="space-y-3">
         {tickets.map((ticket) => {
           const isResolved = ticket.status.startsWith('Resolved');
