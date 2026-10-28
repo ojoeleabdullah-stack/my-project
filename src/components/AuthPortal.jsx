@@ -28,7 +28,6 @@ function AuthPortal({ setUserSession, setActiveScreen, setIsProfileActivated, se
           assists: { count: 8, confirmedByCoach: false }
         }
       });
-      // 2. Set profile status to active so the 'Register' page disappears
       setIsProfileActivated(true);
       setUserSession({ isLoggedIn: true, role: 'player', email: email });
       setActiveScreen('profile');
@@ -46,7 +45,6 @@ function AuthPortal({ setUserSession, setActiveScreen, setIsProfileActivated, se
     } else if (role === 'admin') {
       setActiveScreen('admin');
     } else {
-      // Fresh new players go straight to setup their card onboarding
       setIsProfileActivated(false);
       setActiveScreen('register');
     }
@@ -71,7 +69,7 @@ function AuthPortal({ setUserSession, setActiveScreen, setIsProfileActivated, se
           <div>
             <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Email Address</label>
             <input type="email" placeholder="returning@player.com or fresh@user.com" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-800 text-slate-200 focus:outline-none focus:border-sky-500" />
-            <p className="text-[9px] text-slate-500 mt-1 font-mono">Tip: Type 'returning@player.com' to test returning player mode.</p>
+            <p className="text-[9px] text-slate-500 mt-1 font-mono"> Your Registered Mail!.</p>
           </div>
           <div>
             <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Password</label>
