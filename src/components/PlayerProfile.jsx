@@ -4,7 +4,7 @@ function PlayerProfile({ player }) {
   return (
     <div className="max-w-4xl mx-auto space-y-6 text-slate-100 font-sans animate-fade-in">
       
-      {/* 💳 CORPORATE METADATA PLAYER CARD */}
+      {/* CORPORATE METADATA PLAYER CARD */}
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-md flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="space-y-3">
           <div className="flex flex-wrap gap-2">
@@ -26,7 +26,7 @@ function PlayerProfile({ player }) {
           </p>
         </div>
 
-        {/* 📊 CORE STATISTICAL LEDGER (PRD SECTION 6.4 METRIC SEGREGATION) */}
+        {/*  CORE STATISTICAL LEDGER (PRD SECTION 6.4 METRIC SEGREGATION) */}
         <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 min-w-[200px] divide-y divide-slate-800">
           <div className="pb-2 flex justify-between items-center text-xs">
             <span className="text-slate-400 font-bold uppercase tracking-wider">Metrics Log</span>
@@ -43,7 +43,7 @@ function PlayerProfile({ player }) {
         </div>
       </div>
 
-      {/* 📹 EVIDENCE & FOOTAGE LINKS VALIDATION (PRD SECTION 6.3) */}
+      {/*  EVIDENCE & FOOTAGE LINKS VALIDATION */}
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
         <div>
           <h3 className="text-sm font-bold uppercase tracking-wider text-white font-mono">Validated Video Evidence Links</h3>

@@ -42,7 +42,6 @@ function App() {
     { id: 3, name: "Ojoele Abdullah", position: "Midfielder", ageBand: "U-20", location: "Lagos State", club: "Lagos Football Academy", videoUrl: "https://youtube.com", goals: 12, assists: 8, verifiedByCoach: true }
   ]);
 
-  // 🛡️ PRD REQUISITE: Master Repository for Flags and Verification Actions (PRD Section 11 & 15)
   const [moderationTickets, setModerationTickets] = useState([
     { id: 101, type: "Fraud Claim", targetName: "Fake Agent Joe", details: "Demanded ₦50,000 for guaranteed trials at Malmö FF.", reporter: "Acme Football Academy", status: "Active" },
     { id: 102, type: "Scout Verification Request", targetName: "David Cole", details: "Vetting Chelsea FC official credential documents.", reporter: "System Audit", status: "Pending Manual Review" },
