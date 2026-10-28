@@ -15,13 +15,12 @@ function VideoInstagramFeed({ globalVideos, setGlobalVideos, userRole }) {
     }));
   };
 
-  // 🛡️ ROLE PRIVACY FILTER LAYER
-  // If user is a player, we filter out any videos marked as 'restricted' or confidential scout-only logs.
+  // ROLE PRIVACY FILTER LAYER
   const visibleFeed = globalVideos.filter(post => {
     if (post.isConfidentialScoutOnly && userRole !== 'scout') {
-      return false; // Blocks players from reading or seeing this item
+      return false; 
     }
-    return true; // Allows entry to pass through the security filter
+    return true; 
   });
 
   return (
@@ -70,7 +69,7 @@ function VideoInstagramFeed({ globalVideos, setGlobalVideos, userRole }) {
             />
           </div>
 
-          {/* RIGHT ACTION FLOAT ROW (Instagram Overlay Standard Alignment) */}
+          {/* RIGHT ACTION FLOAT ROW */}
           <div className="absolute right-3 bottom-24 z-20 flex flex-col items-center gap-5 bg-black/20 p-2 rounded-2xl backdrop-blur-xs">
             {/* Heart Like Trigger */}
             <div className="text-center group">
