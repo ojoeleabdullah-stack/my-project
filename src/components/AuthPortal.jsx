@@ -35,7 +35,7 @@ function AuthPortal({ setUserSession, setActiveScreen, setIsProfileActivated, se
       return;
     }
 
-    // Default flow for fresh, unregistered sign-ups or other system roles
+    // Default flow for fresh system roles
     setUserSession({ isLoggedIn: true, role: role, email: email });
 
     if (role === 'scout') {
