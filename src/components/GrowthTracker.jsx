@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function GrowthTracker({ player, setPlayer }) {
+function GrowthTracker({ player, setPlayer, userEmail }) {
   const [metricType, setMetricType] = useState('goals');
   const [metricValue, setMetricValue] = useState('');
   
@@ -10,30 +10,31 @@ function GrowthTracker({ player, setPlayer }) {
     { id: 2, type: "Assists", amount: 8, date: "2026-10-18", status: "Self Reported" }
   ]);
 
-  const handleLogSubmit = (e) => {
+    const handleLogSubmit = (e) => {
     e.preventDefault();
     const count = parseInt(metricValue);
     if (isNaN(count) || count <= 0) return alert("Enter a valid integer quantity.");
 
-    // Update active telemetry state structures safely
+    let updatedMetrics;
     if (metricType === 'goals') {
-      setPlayer({
-        ...player,
-        metrics: { ...player.metrics, goals: { count: player.metrics.goals.count + count, confirmedByCoach: false } }
-      });
+      updatedMetrics = { ...player.metrics, goals: { count: player.metrics.goals.count + count, confirmedByCoach: false } };
     } else {
-      setPlayer({
-        ...player,
-        metrics: { ...player.metrics, assists: { count: player.metrics.assists.count + count, confirmedByCoach: false } }
-      });
+      updatedMetrics = { ...player.metrics, assists: { count: player.metrics.assists.count + count, confirmedByCoach: false } };
     }
+
+    const updatedPlayer = { ...player, metrics: updatedMetrics };
+    
+    // Save updated telemetry structure instantly to memory!
+    localStorage.setItem(`lunara_profile_${userEmail.toLowerCase()}`, JSON.stringify(updatedPlayer));
+    
+    setPlayer(updatedPlayer);
 
     const newLog = {
       id: Date.now(),
       type: metricType === 'goals' ? 'Goals' : 'Assists',
       amount: count,
       date: new Date().toISOString().split('T')[0],
-      status: "Self Reported" // Self-reported marker enforced until coach authorization matches (PRD 6.4)
+      status: "Self Reported"
     };
 
     setHistoryLogs([newLog, ...historyLogs]);

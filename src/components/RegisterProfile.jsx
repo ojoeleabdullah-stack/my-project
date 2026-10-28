@@ -1,25 +1,17 @@
 import React, { useState } from 'react';
 
-function RegisterProfile({ setPlayer, setIsProfileActivated, setActiveScreen }) {
+function RegisterProfile({ setPlayer, setIsProfileActivated, setActiveScreen, userEmail }) {
   const [formData, setFormData] = useState({
-    name: '',
-    position: 'Midfielder',
-    preferredFoot: 'Right',
-    ageBand: 'U-18',
-    location: 'Lagos State',
-    club: '',
-    bio: '',
-    videoUrl: ''
+    name: '', position: 'Midfielder', preferredFoot: 'Right', ageBand: 'U-18', location: 'Lagos State', club: '', bio: '', videoUrl: ''
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.name || !formData.club || !formData.bio || !formData.videoUrl) {
-      return alert("Please fill out all registration fields to complete your identity setup.");
+      return alert("Please fill out all registration fields.");
     }
 
-    // Set the complete data profile as demanded by PRD Section 6.2
-    setPlayer({
+    const profileData = {
       name: formData.name,
       position: formData.position,
       preferredFoot: formData.preferredFoot,
@@ -32,10 +24,14 @@ function RegisterProfile({ setPlayer, setIsProfileActivated, setActiveScreen }) 
         goals: { count: 0, confirmedByCoach: false },
         assists: { count: 0, confirmedByCoach: false }
       }
-    });
+    };
 
+    // 💾 SAVE TO BROWSER MEMORY (Simulating Backend Storage)
+    localStorage.setItem(`lunara_profile_${userEmail.toLowerCase()}`, JSON.stringify(profileData));
+
+    setPlayer(profileData);
     setIsProfileActivated(true);
-    alert("🔥 Athlete Profile Activated Successfully! Profile status is now discoverable.");
+    alert("🔥 Profile Created and Saved to Browser Memory! Try logging out and back in later to test.");
     setActiveScreen('profile');
   };
 
@@ -43,7 +39,7 @@ function RegisterProfile({ setPlayer, setIsProfileActivated, setActiveScreen }) 
     <div className="max-w-xl mx-auto bg-slate-900 border border-slate-800 p-8 rounded-xl shadow-xl mt-4 text-slate-100 font-sans animate-fade-in">
       <div className="text-center mb-6 space-y-1">
         <h1 className="text-xl font-bold tracking-tight text-white font-mono uppercase">Setup Athlete Profile Registry</h1>
-        <p className="text-xs text-slate-400">Complete your comprehensive football profile to become discoverable by verified scouts.</p>
+        <p className="text-xs text-slate-400">Account: <span className="text-sky-400 font-mono">{userEmail}</span></p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 text-xs">
@@ -67,7 +63,7 @@ function RegisterProfile({ setPlayer, setIsProfileActivated, setActiveScreen }) 
             <select value={formData.preferredFoot} onChange={(e) => setFormData({...formData, preferredFoot: e.target.value})} className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-800 text-slate-300 focus:outline-none">
               <option value="Right">Right Foot</option>
               <option value="Left">Left Foot</option>
-              <option value="Ambidextrous">Both (Ambidextrous)</option>
+              <option value="Ambidextrous">Both</option>
             </select>
           </div>
           <div>
@@ -87,26 +83,25 @@ function RegisterProfile({ setPlayer, setIsProfileActivated, setActiveScreen }) 
               <option value="Lagos State">Lagos State</option>
               <option value="Enugu State">Enugu State</option>
               <option value="Kano State">Kano State</option>
-              <option value="Delta State">Delta State</option>
             </select>
           </div>
           <div>
-            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Academy / Current Club</label>
-            <input type="text" placeholder="e.g., Pepsi Football Academy" value={formData.club} onChange={(e) => setFormData({...formData, club: e.target.value})} className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-800 text-white focus:outline-none" />
+            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Academy / Club</label>
+            <input type="text" placeholder="e.g., Lagos Football Academy" value={formData.club} onChange={(e) => setFormData({...formData, club: e.target.value})} className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-800 text-white focus:outline-none" />
           </div>
         </div>
 
         <div>
-          <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Showreel Video Link (YouTube / External)</label>
+          <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Showreel Video Link (YouTube)</label>
           <input type="text" placeholder="https://youtube.com..." value={formData.videoUrl} onChange={(e) => setFormData({...formData, videoUrl: e.target.value})} className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-800 text-white font-mono text-[11px] focus:outline-none" />
         </div>
 
         <div>
           <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Football Biography & Achievements</label>
-          <textarea rows="3" placeholder="Describe your playing style, matches played, and core athletic attributes..." value={formData.bio} onChange={(e) => setFormData({...formData, bio: e.target.value})} className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-800 text-white focus:outline-none" />
+          <textarea rows="3" placeholder="Describe your playing style..." value={formData.bio} onChange={(e) => setFormData({...formData, bio: e.target.value})} className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-800 text-white focus:outline-none" />
         </div>
 
-        <button type="submit" className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2.5 rounded text-xs transition-colors uppercase tracking-wider shadow">
+        <button type="submit" className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-2.5 rounded text-xs uppercase tracking-wider shadow">
           Activate Profile Registry Node
         </button>
       </form>
