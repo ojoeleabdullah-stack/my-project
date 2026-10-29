@@ -26,7 +26,7 @@ function RegisterProfile({ setPlayer, setIsProfileActivated, setActiveScreen, us
       }
     };
 
-    // 💾 SAVE TO BROWSER MEMORY (Simulating Backend Storage)
+    // SAVE TO BROWSER MEMORY (Simulating Backend Storage)
     localStorage.setItem(`lunara_profile_${userEmail.toLowerCase()}`, JSON.stringify(profileData));
 
     setPlayer(profileData);
@@ -80,9 +80,43 @@ function RegisterProfile({ setPlayer, setIsProfileActivated, setActiveScreen, us
           <div>
             <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">State Location (Nigeria)</label>
             <select value={formData.location} onChange={(e) => setFormData({...formData, location: e.target.value})} className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-800 text-slate-300 focus:outline-none">
-              <option value="Lagos State">Lagos State</option>
+              <option value="Abia State">Abia State</option>
+              <option value="Adamawa State">Adamawa State</option>
+              <option value="Akwa Ibom State">Akwa Ibom State</option>
+              <option value="Abuja FCT">Abuja FCT</option>
+              <option value="Anambra State">Anambra State</option>
+              <option value="Bauchi State">Bauchi State</option>
+              <option value="Bayelsa State">Bayelsa State</option>
+              <option value="Benue State">Benue State</option>
+              <option value="Borno State">Borno State</option>
+              <option value="Cross River State">Cross River State</option>
+              <option value="Delta State">Delta State</option>
+              <option value="Ebonyi State">Ebonyi State</option>
+              <option value="Edo State">Edo State</option>
+              <option value="Ekiti State">Ekiti State</option>
               <option value="Enugu State">Enugu State</option>
+              <option value="Gombe State">Gombe State</option>
+              <option value="Imo State">Imo State</option>
+              <option value="Jigawa State">Jigawa State</option>
+              <option value="Kaduna State">Kaduna State</option>
               <option value="Kano State">Kano State</option>
+              <option value="Katsina State">Katsina State</option>
+              <option value="Kebbi State">Kebbi State</option>
+              <option value="Kogi State">Kogi State</option>
+              <option value="Kwara State">Kwara State</option>
+              <option value="Lagos State">Lagos State</option>
+              <option value="Nasarawa State">Nasarawa State</option>
+              <option value="Niger State">Niger State</option>
+              <option value="Ogun State">Ogun State</option>
+              <option value="Ondo State">Ondo State</option>
+              <option value="Osun State">Osun State</option>
+              <option value="Oyo State">Oyo State</option>
+              <option value="Plateau State">Plateau State</option>
+              <option value="Rivers State">Rivers State</option>
+              <option value="Sokoto State">Sokoto State</option>
+              <option value="Taraba State">Taraba State</option>
+              <option value="Yobe State">Yobe State</option>
+              <option value="Zamfara State">Zamfara State</option>
             </select>
           </div>
           <div>
