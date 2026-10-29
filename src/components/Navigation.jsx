@@ -60,7 +60,7 @@ function Navigation({
 
   return (
     <>
-      {/* HEADER — MENU button stays hidden on mobile as you had it */}
+      {/* HEADER — MENU */}
       <header className="bg-slate-900 border-b border-slate-800 px-6 h-16 sticky top-0 z-50 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
