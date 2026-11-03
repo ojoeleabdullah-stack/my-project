@@ -1,93 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import Navigation from './components/Navigation';
-import AuthPortal from './components/AuthPortal';
-import PlayerProfile from './components/PlayerProfile';
-import GrowthTracker from './components/GrowthTracker';
-import ScoutDashboard from './components/ScoutDashboard';
-import RegisterProfile from './components/RegisterProfile';
-import TeamManagement from './components/TeamManagement';
-import ScoutVerification from './components/ScoutVerification';
-import AdminModeration from './components/AdminModeration';
-import PlayerDashboard from './components/PlayerDashboard';
+import React, { useState } from "react";
+import Navigation from "./components/Navigation";
+import AuthPortal from "./components/AuthPortal";
+import PlayerDashboard from "./components/PlayerDashboard";
+import PlayerProfile from "./components/PlayerProfile";
+import RegisterProfile from "./components/RegisterProfile";
+import ScoutDashboard from "./components/ScoutDashboard";
+import ScoutVerification from "./components/ScoutVerification";
+import TeamManagement from "./components/TeamManagement";
+import VideoInstagramFeed from "./components/VideoInstagramFeed";
+import GrowthTracker from "./components/GrowthTracker";
+import ChatDrawer from "./components/ChatDrawer";
+import AdminModeration from "./components/AdminModeration";
+import "./App.css";
 
-function App() {
-  const [userSession, setUserSession] = useState({
-    isLoggedIn: false,
-    role: 'player', 
-    email: ''
-  });
+const initialPlayers = [
+  { id: 1, name: "David Okafor", age: 18, position: "Striker", location: "Lagos, Nigeria", club: "Unattached", rating: "92", foot: "Right", pace: 91, shooting: 88, passing: 74, image: "DO", verified: true, bio: "Explosive forward with a strong instinct for goal.", video: "https://example.com/highlight" },
+  { id: 2, name: "Samuel Adeyemi", age: 20, position: "Central Midfielder", location: "Ibadan, Nigeria", club: "Rising Stars FC", rating: "89", foot: "Both", pace: 82, shooting: 78, passing: 91, image: "SA", verified: true, bio: "Creative midfielder who controls tempo and creates chances.", video: "" },
+  { id: 3, name: "Ibrahim Musa", age: 17, position: "Left Winger", location: "Abuja, Nigeria", club: "Academy 360", rating: "86", foot: "Left", pace: 94, shooting: 81, passing: 79, image: "IM", verified: false, bio: "Quick winger, confident in one-versus-one situations.", video: "" },
+];
 
-  const [activeScreen, setActiveScreen] = useState('dashboard'); // Default or routed screen
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isProfileActivated, setIsProfileActivated] = useState(false);
+export default function App() {
+  const [role, setRole] = useState("player");
+  const [page, setPage] = useState("dashboard");
+  const [players, setPlayers] = useState(initialPlayers);
+  const [currentPlayer, setCurrentPlayer] = useState(initialPlayers[0]);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [savedIds, setSavedIds] = useState([2]);
 
-  const [player, setPlayer] = useState({
-    name: "", position: "", preferredFoot: "", ageBand: "", location: "", club: "", bio: "", videoUrl: "",
-    metrics: { goals: { count: 0, confirmedByCoach: false }, assists: { count: 0, confirmedByCoach: false } }
-  });
-
-  // Check browser memory whenever user session changes (Login/Logout)
-  useEffect(() => {
-    if (userSession.isLoggedIn && userSession.role === 'player') {
-      const savedProfile = localStorage.getItem(`lunara_profile_${userSession.email.toLowerCase()}`);
-      
-      if (savedProfile) {
-        setPlayer(JSON.parse(savedProfile));
-        setIsProfileActivated(true);
-        setActiveScreen('dashboard'); // Direct them to their metrics dashboard upon login
-      } else {
-        setIsProfileActivated(false);
-        setActiveScreen('register'); // Brand new email, go to registration form
-      }
-    }
-  }, [userSession]);
-
-  const [talentPool, setTalentPool] = useState([
-    { id: 1, name: "Chidi Okafor", position: "Striker", ageBand: "U-18", location: "Enugu State", club: "Enugu Rangers Academy", videoUrl: "https://youtube.com", goals: 14, assists: 3, verifiedByCoach: true },
-    { id: 2, name: "Tunde Bakare", position: "Goalkeeper", ageBand: "U-20", location: "Kano State", club: "Kano Pillars Jrs", videoUrl: "https://youtube.com", goals: 0, assists: 0, verifiedByCoach: false }
-  ]);
-
-  const [moderationTickets, setModerationTickets] = useState([
-    { id: 101, type: "Fraud Claim", targetName: "Fake Agent Joe", details: "Demanded ₦50,000 for guaranteed trials.", reporter: "Acme Football Academy", status: "Active" }
-  ]);
-
-  if (!userSession.isLoggedIn) {
-    return (
-      <AuthPortal 
-        setUserSession={setUserSession} 
-        setActiveScreen={setActiveScreen} 
-        setIsProfileActivated={setIsProfileActivated}
-        setPlayer={setPlayer}
-      />
-    );
-  }
+  const navigate = (nextPage) => setPage(nextPage);
+  const addPlayer = (player) => {
+    const newPlayer = { ...player, id: Date.now(), rating: "—", pace: 50, shooting: 50, passing: 50, verified: false };
+    setPlayers((old) => [newPlayer, ...old]);
+    setCurrentPlayer(newPlayer);
+    setRole("player");
+    setPage("dashboard");
+  };
+  const toggleSave = (id) => setSavedIds((old) => old.includes(id) ? old.filter(x => x !== id) : [...old, id]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans pb-20 md:pb-0 select-none">
-      <Navigation 
-        activeScreen={activeScreen} 
-        setActiveScreen={setActiveScreen} 
-        sidebarOpen={sidebarOpen} 
-        setSidebarOpen={setSidebarOpen} 
-        setUserSession={setUserSession}
-        userRole={userSession.role}
-        isProfileActivated={isProfileActivated}
-      />
+    <div className="app-shell">
+      <Navigation role={role} page={page} onNavigate={navigate} onRoleChange={(r) => { setRole(r); setPage("dashboard"); }} onChat={() => setChatOpen(true)} />
+      <main className="main-area">
+        <header className="topbar">
+          <div><span className="eyebrow">LUNARA / {role.toUpperCase()}</span><h1>{page === "dashboard" ? (role === "player" ? "Player overview" : "Talent discovery") : page.replace(/([A-Z])/g, " $1")}</h1></div>
+          <div className="topbar-right"><span className="live-dot"></span><span className="muted small">Opportunity starts here</span><button className="avatar-button" onClick={() => navigate(role === "player" ? "profile" : "verification")}>{role === "player" ? (currentPlayer.image || "PL") : "SC"}</button></div>
+        </header>
 
-      <main className="max-w-7xl mx-auto p-4 md:p-8">
-        {activeScreen === 'register' && userSession.role === 'player' && !isProfileActivated && (
-          <RegisterProfile setPlayer={setPlayer} setIsProfileActivated={setIsProfileActivated} setActiveScreen={setActiveScreen} userEmail={userSession.email} />
-        )}
-        {activeScreen === 'profile' && userSession.role === 'player' && <PlayerProfile player={player} />}
-        {activeScreen === 'dashboard' && userSession.role === 'player' && <PlayerDashboard player={player} />}
-        {activeScreen === 'tracking' && userSession.role === 'player' && <GrowthTracker player={player} setPlayer={setPlayer} talentPool={talentPool} setTalentPool={setTalentPool} userEmail={userSession.email} />}
-        {activeScreen === 'team' && userSession.role === 'coach' && <TeamManagement roster={talentPool} setRoster={setTalentPool} />}
-        {activeScreen === 'verify' && userSession.role === 'scout' && <ScoutVerification />}
-        {activeScreen === 'scout' && <ScoutDashboard talentPool={talentPool} userRole={userSession.role} />}
-        {activeScreen === 'admin' && userSession.role === 'admin' && <AdminModeration tickets={moderationTickets} setTickets={setModerationTickets} />}
+        {page === "dashboard" && role === "player" && <PlayerDashboard player={currentPlayer} onNavigate={navigate} />}
+        {page === "dashboard" && role === "scout" && <ScoutDashboard players={players} onView={(p) => { setCurrentPlayer(p); navigate("profile"); }} savedIds={savedIds} onSave={toggleSave} />}
+        {page === "profile" && <PlayerProfile player={currentPlayer} isScout={role === "scout"} onChat={() => setChatOpen(true)} />}
+        {page === "register" && <RegisterProfile onCreate={addPlayer} />}
+        {page === "verification" && <ScoutVerification />}
+        {page === "teams" && <TeamManagement role={role} />}
+        {page === "videos" && <VideoInstagramFeed />}
+        {page === "growth" && <GrowthTracker />}
+        {page === "admin" && <AdminModeration players={players} />}
+        <footer className="footer"><span>© 2026 Lunara</span><span>Built for the next generation of football talent.</span></footer>
       </main>
+      <ChatDrawer open={chatOpen} onClose={() => setChatOpen(false)} />
+      <AuthPortal />
     </div>
   );
 }
-
-export default App;
