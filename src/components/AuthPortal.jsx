@@ -68,7 +68,7 @@ function AuthPortal({ setUserSession, setActiveScreen, setIsProfileActivated, se
         <form onSubmit={handleAuthAction} className="space-y-4 text-xs">
           <div>
             <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Email Address</label>
-            <input type="email" placeholder="returning@player.com or fresh@user.com" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-800 text-slate-200 focus:outline-none focus:border-sky-500" />
+            <input type="email" placeholder="returning@player.com" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-800 text-slate-200 focus:outline-none focus:border-sky-500" />
             <p className="text-[9px] text-slate-500 mt-1 font-mono"> Your Registered Mail!.</p>
           </div>
           <div>
