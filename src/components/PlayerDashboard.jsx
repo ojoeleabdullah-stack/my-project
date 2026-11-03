@@ -51,30 +51,6 @@ export default function PlayerDashboard() {
 
   return (
     <div className="flex min-h-screen bg-[#090F1C] text-slate-200 font-sans">
-      
-      {/* SIDEBAR NAVIGATION */}
-      <aside className="w-16 bg-[#0E1726] flex flex-col items-center py-6 justify-between border-r border-slate-800 shrink-0">
-        <div className="flex flex-col gap-8 items-center w-full">
-          <div className="text-cyan-400 font-black text-xl tracking-wider">P</div>
-          <nav className="flex flex-col gap-6 w-full items-center">
-            <button className="p-2 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-cyan-400 transition">
-              <LayoutDashboard size={20} />
-            </button>
-            <button className="p-2 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-cyan-400 transition">
-              <User size={20} />
-            </button>
-            <button className="p-2 rounded-xl text-[#00f3ff] bg-slate-800/50 border border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
-              <BarChart3 size={20} />
-            </button>
-            <button className="p-2 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-cyan-400 transition">
-              <Trophy size={20} />
-            </button>
-          </nav>
-        </div>
-        <button className="p-2 rounded-xl text-slate-400 hover:bg-slate-800 hover:text-cyan-400 transition">
-          <Settings size={20} />
-        </button>
-      </aside>
 
       {/* MAIN CONTAINER */}
       <main className="flex-1 p-6 overflow-y-auto">
@@ -97,23 +73,6 @@ export default function PlayerDashboard() {
                   {tab}
                 </button>
               ))}
-            </div>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-2.5 text-slate-500" size={16} />
-              <input 
-                type="text" 
-                placeholder="Search..." 
-                className="bg-[#111A2E] border border-slate-800 rounded-full pl-9 pr-4 py-2 text-xs text-slate-300 focus:outline-none focus:border-cyan-500 w-48"
-              />
-            </div>
-            <button className="p-2 rounded-full bg-[#111A2E] text-slate-400 hover:text-white border border-slate-800">
-              <Bell size={16} />
-            </button>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center font-bold text-xs text-white">
-              JD
             </div>
           </div>
         </header>

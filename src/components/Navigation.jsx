@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { LayoutDashboard, User, BarChart3, Trophy, Settings } from 'lucide-react';
 
 const ROLE_LABELS = {
   player: 'Player',
@@ -21,15 +22,28 @@ function Navigation({
     { id: 'verify', label: 'Compliance ID', icon: '🛡️', viewableBy: ['scout'] },
     { id: 'team', label: 'Roster Hub', icon: '📋', viewableBy: ['coach'] },
     { id: 'admin', label: 'Safety Moderation', icon: '🛠️', viewableBy: ['admin'] },
-    { id: 'dashboard', label: 'My Dashboard', icon: '📊', viewableBy: userRole === 'player' && isProfileActivated ? ['player'] : [] },
-    { id: 'register', label: 'Setup Card', icon: '📝', viewableBy: userRole === 'player' && !isProfileActivated ? ['player'] : [] },
-    { id: 'profile', label: 'My Profile', icon: '👤', viewableBy: userRole === 'player' && isProfileActivated ? ['player'] : [] },
-    { id: 'tracking', label: 'Metric Logs', icon: '📈', viewableBy: userRole === 'player' && isProfileActivated ? ['player'] : [] },
+    { id: 'dashboard', label: 'My Dashboard', icon: '📊', viewableBy: ['player'] },
+    { id: 'register', label: 'Setup Card', icon: '📝', viewableBy: ['player'] },
+    { id: 'profile', label: 'My Profile', icon: '👤', viewableBy: ['player'] },
+    { id: 'tracking', label: 'Metric Logs', icon: '📈', viewableBy: ['player'] },
   ];
 
-  const authorizedNavItems = allNavItems.filter((item) => item.viewableBy.includes(userRole));
+  // Refined authorization check accounting for profile activation state where needed
+  const authorizedNavItems = allNavItems.filter((item) => {
+    if (!item.viewableBy.includes(userRole)) return false;
 
-  // functional updater 
+    // Additional conditional rules for players based on activation
+    if (userRole === 'player') {
+      const needsActivation = ['dashboard', 'profile', 'tracking'].includes(item.id);
+      const needsSetup = item.id === 'register';
+
+      if (needsActivation && !isProfileActivated) return false;
+      if (needsSetup && isProfileActivated) return false;
+    }
+
+    return true;
+  });
+
   const handleToggleSidebar = () => {
     if (typeof setSidebarOpen === 'function') setSidebarOpen((prev) => !prev);
   };
@@ -38,14 +52,17 @@ function Navigation({
     if (typeof setSidebarOpen === 'function') setSidebarOpen(false);
   };
 
-  // (desktop UX)
   const handleNavClick = (id) => {
     setActiveScreen(id);
     closeSidebar();
   };
 
   const handleLogout = () => {
-    try { localStorage.removeItem('lunara.token'); } catch { /* SSR / private mode */ }
+    try { 
+      localStorage.removeItem('lunara.token'); 
+    } catch { 
+      /* SSR / private mode */ 
+    }
     setUserSession({ isLoggedIn: false, role: null, email: null });
     closeSidebar();
   };
