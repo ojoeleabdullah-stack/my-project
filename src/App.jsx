@@ -8,6 +8,7 @@ import RegisterProfile from './components/RegisterProfile';
 import TeamManagement from './components/TeamManagement';
 import ScoutVerification from './components/ScoutVerification';
 import AdminModeration from './components/AdminModeration';
+import PlayerDashboard from './components/PlayerDashboard';
 
 function App() {
   const [userSession, setUserSession] = useState({
@@ -16,7 +17,7 @@ function App() {
     email: ''
   });
 
-  const [activeScreen, setActiveScreen] = useState('scout');
+  const [activeScreen, setActiveScreen] = useState('dashboard'); // Default or routed screen
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isProfileActivated, setIsProfileActivated] = useState(false);
 
@@ -25,16 +26,15 @@ function App() {
     metrics: { goals: { count: 0, confirmedByCoach: false }, assists: { count: 0, confirmedByCoach: false } }
   });
 
-  //  REQUISITE: Check browser memory whenever user session changes (Login/Logout)
+  // Check browser memory whenever user session changes (Login/Logout)
   useEffect(() => {
     if (userSession.isLoggedIn && userSession.role === 'player') {
-      // Look into the browser storage for this specific email's profile
       const savedProfile = localStorage.getItem(`lunara_profile_${userSession.email.toLowerCase()}`);
       
       if (savedProfile) {
         setPlayer(JSON.parse(savedProfile));
         setIsProfileActivated(true);
-        setActiveScreen('profile'); // Send them straight to their card!
+        setActiveScreen('dashboard'); // Direct them to their metrics dashboard upon login
       } else {
         setIsProfileActivated(false);
         setActiveScreen('register'); // Brand new email, go to registration form
@@ -79,6 +79,7 @@ function App() {
           <RegisterProfile setPlayer={setPlayer} setIsProfileActivated={setIsProfileActivated} setActiveScreen={setActiveScreen} userEmail={userSession.email} />
         )}
         {activeScreen === 'profile' && userSession.role === 'player' && <PlayerProfile player={player} />}
+        {activeScreen === 'dashboard' && userSession.role === 'player' && <PlayerDashboard player={player} />}
         {activeScreen === 'tracking' && userSession.role === 'player' && <GrowthTracker player={player} setPlayer={setPlayer} talentPool={talentPool} setTalentPool={setTalentPool} userEmail={userSession.email} />}
         {activeScreen === 'team' && userSession.role === 'coach' && <TeamManagement roster={talentPool} setRoster={setTalentPool} />}
         {activeScreen === 'verify' && userSession.role === 'scout' && <ScoutVerification />}

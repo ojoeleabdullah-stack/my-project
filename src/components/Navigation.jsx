@@ -21,6 +21,7 @@ function Navigation({
     { id: 'verify', label: 'Compliance ID', icon: '🛡️', viewableBy: ['scout'] },
     { id: 'team', label: 'Roster Hub', icon: '📋', viewableBy: ['coach'] },
     { id: 'admin', label: 'Safety Moderation', icon: '🛠️', viewableBy: ['admin'] },
+    { id: 'dashboard', label: 'My Dashboard', icon: '📊', viewableBy: userRole === 'player' && isProfileActivated ? ['player'] : [] },
     { id: 'register', label: 'Setup Card', icon: '📝', viewableBy: userRole === 'player' && !isProfileActivated ? ['player'] : [] },
     { id: 'profile', label: 'My Profile', icon: '👤', viewableBy: userRole === 'player' && isProfileActivated ? ['player'] : [] },
     { id: 'tracking', label: 'Metric Logs', icon: '📈', viewableBy: userRole === 'player' && isProfileActivated ? ['player'] : [] },
