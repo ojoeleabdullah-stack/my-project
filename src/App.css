@@ -1705,3 +1705,58 @@ button {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* FIX: Desktop sidebar navigation spacing */
+
+@media (min-width: 761px) {
+  .sidebar {
+    width: 265px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .main-area {
+    margin-left: 265px;
+    width: calc(100% - 265px);
+  }
+
+  .sidebar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 10px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .sidebar-nav .nav-link > span:last-child {
+    white-space: nowrap;
+  }
+
+  .nav-icon {
+    flex: 0 0 22px;
+    width: 22px;
+    font-size: 17px;
+  }
+
+  .workspace-label {
+    padding-left: 10px;
+  }
+
+  .upgrade-card {
+    padding: 13px;
+  }
+}
+
+/* Keep sidebar proportions on smaller screens */
+@media (min-width: 761px) and (max-width: 1050px) {
+  .sidebar {
+    width: 230px;
+  }
+
+  .main-area {
+    margin-left: 230px;
+    width: calc(100% - 230px);
+  }
+}
