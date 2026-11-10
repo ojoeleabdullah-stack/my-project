@@ -1,2 +1,69 @@
-import React,{useState} from "react";
-export default function ScoutVerification(){const [sent,setSent]=useState(false);return <div className="page-content narrow"><div className="section-heading"><div><span className="eyebrow">TRUST & SAFETY</span><h2>Scout verification</h2><p className="muted">Verification helps players understand who is contacting them.</p></div></div><div className="panel verification-card"><div className="verification-icon">✓</div><h3>{sent?"Application received":"Become a verified scout"}</h3><p className="muted">{sent?"Your details have been submitted for review. This demo does not send data to a server.":"Provide your professional details so the Lunara team can review your account."}</p>{!sent&&<form onSubmit={e=>{e.preventDefault();setSent(true)}} className="form-grid"><label className="span-two">Organisation / club<input required placeholder="Club, academy or agency"/></label><label>Professional role<input required placeholder="e.g. Talent scout"/></label><label>Work email<input required type="email" placeholder="name@organisation.com"/></label><label className="span-two">Why are you joining Lunara?<textarea required placeholder="Briefly describe your scouting work."/></label><div className="span-two"><button className="primary-btn">Submit for review ↗</button></div></form>}</div></div>}
+import React, { useState } from "react";
+
+export default function ScoutVerification() {
+  const [sent, setSent] = useState(false);
+
+  const submit = (e) => {
+    e.preventDefault();
+    setSent(true);
+  };
+
+  return (
+    <div className="page-content narrow">
+      {/* ── Heading ── */}
+      <div className="section-heading">
+        <div>
+          <span className="eyebrow">TRUST &amp; SAFETY</span>
+          <h2>Scout verification</h2>
+          <p className="muted">
+            Verification helps players understand who is contacting them.
+          </p>
+        </div>
+      </div>
+
+      {/* ── Verification card ── */}
+      <div className="panel verification-card">
+        <div className="verification-icon">✓</div>
+
+        <h3>{sent ? "Application received" : "Become a verified scout"}</h3>
+        <p className="muted">
+          {sent
+            ? "Your details have been submitted for review. This demo does not send data to a server."
+            : "Provide your professional details so the Lunara team can review your account."}
+        </p>
+
+        {!sent && (
+          <form onSubmit={submit} className="form-grid">
+            <label className="span-two">
+              Organisation / club
+              <input required placeholder="Club, academy or agency" />
+            </label>
+
+            <label>
+              Professional role
+              <input required placeholder="e.g. Talent scout" />
+            </label>
+
+            <label>
+              Work email
+              <input
+                required
+                type="email"
+                placeholder="name@organisation.com"
+              />
+            </label>
+
+            <label className="span-two">
+              Why are you joining Lunara?
+              <textarea required placeholder="Briefly describe your scouting work." />
+            </label>
+
+            <div className="span-two">
+              <button className="primary-btn">Submit for review ↗</button>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}

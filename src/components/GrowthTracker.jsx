@@ -1,3 +1,76 @@
 import React from "react";
-const goals=[["Ball control","Complete 3 focused sessions weekly",2,3],["Fitness","Build speed and endurance",3,4],["Match performance","Record and review match footage",1,2],["Technical development","Complete weak-foot drills",4,5]];
-export default function GrowthTracker(){return <div className="page-content"><div className="section-heading"><div><span className="eyebrow">DEVELOPMENT PLAN</span><h2>Your growth tracker</h2><p className="muted">Small, consistent improvements create better players.</p></div><span className="pill">WEEK 04</span></div><div className="stats-grid"><div className="stat-card"><span className="muted">Training sessions</span><strong>10</strong><small className="positive">This month</small></div><div className="stat-card"><span className="muted">Goals completed</span><strong>7/10</strong><small className="positive">70% completion</small></div><div className="stat-card"><span className="muted">Consistency</span><strong>82%</strong><small className="positive">+8% this month</small></div><div className="stat-card"><span className="muted">Next review</span><strong>Friday</strong><small className="muted">Weekly check-in</small></div></div><section className="panel goals-panel"><span className="eyebrow">WEEKLY TARGETS</span><h3>Training goals</h3>{goals.map(([name,desc,done,total])=><div className="goal-row" key={name}><div><b>{name}</b><small className="muted">{desc}</small></div><span>{done}/{total}</span><div className="progress-track"><div style={{width:`${done/total*100}%`}}/></div></div>)}</section><p className="small muted">Sample progress data for the prototype. Real tracking can be connected to player-entered sessions, coach feedback and verified match records.</p></div>}
+
+const GOALS = [
+  ["Ball control", "Complete 3 focused sessions weekly", 2, 3],
+  ["Fitness", "Build speed and endurance", 3, 4],
+  ["Match performance", "Record and review match footage", 1, 2],
+  ["Technical development", "Complete weak-foot drills", 4, 5],
+];
+
+const STATS = [
+  { label: "Training sessions", value: "10", note: "This month", tone: "positive" },
+  { label: "Goals completed", value: "7/10", note: "70% completion", tone: "positive" },
+  { label: "Consistency", value: "82%", note: "+8% this month", tone: "positive" },
+  { label: "Next review", value: "Friday", note: "Weekly check-in", tone: "muted" },
+];
+
+function GoalRow({ name, desc, done, total }) {
+  return (
+    <div className="goal-row">
+      <div>
+        <b>{name}</b>
+        <small className="muted">{desc}</small>
+      </div>
+      <span>{done}/{total}</span>
+      <div className="progress-track">
+        <div style={{ width: `${(done / total) * 100}%` }} />
+      </div>
+    </div>
+  );
+}
+
+export default function GrowthTracker() {
+  return (
+    <div className="page-content">
+      <div className="section-heading">
+        <div>
+          <span className="eyebrow">DEVELOPMENT PLAN</span>
+          <h2>Your growth tracker</h2>
+          <p className="muted">
+            Small, consistent improvements create better players.
+          </p>
+        </div>
+        <span className="pill">WEEK 04</span>
+      </div>
+
+      <div className="stats-grid">
+        {STATS.map(({ label, value, note, tone }) => (
+          <div className="stat-card" key={label}>
+            <span className="muted">{label}</span>
+            <strong>{value}</strong>
+            <small className={tone}>{note}</small>
+          </div>
+        ))}
+      </div>
+
+      <section className="panel goals-panel">
+        <span className="eyebrow">WEEKLY TARGETS</span>
+        <h3>Training goals</h3>
+        {GOALS.map(([name, desc, done, total]) => (
+          <GoalRow
+            key={name}
+            name={name}
+            desc={desc}
+            done={done}
+            total={total}
+          />
+        ))}
+      </section>
+
+      <p className="small muted">
+        Sample progress data for the prototype. Real tracking can be connected to
+        player-entered sessions, coach feedback and verified match records.
+      </p>
+    </div>
+  );
+}
