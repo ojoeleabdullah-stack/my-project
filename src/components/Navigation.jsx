@@ -39,6 +39,11 @@ export default function Navigation({
     setMobileMenuOpen(false);
   };
 
+  const openMessages = () => {
+  setMobileMenuOpen(false);
+  onChat();
+  };
+
   const getStartedPage = isPlayer
     ? "register"
     : isAdmin
@@ -103,7 +108,7 @@ export default function Navigation({
             </div>
           )}
 
-          <button className="nav-link messages-link" onClick={onChat}>
+          <button className="nav-link messages-link" onClick={openMessages}>
             <span className="nav-icon">✉</span>
             <span>Messages</span>
             <i className="unread-dot" />
@@ -169,7 +174,7 @@ export default function Navigation({
             </button>
           ))}
 
-          <button className="nav-link" onClick={onChat}>
+          <button className="nav-link" onClick={openMessages}>
             <span className="nav-icon">✉</span>
             Messages
           </button>
