@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useMemo } from "react";
 
 import Navigation from "./components/Navigation";
@@ -18,7 +19,7 @@ import "./App.css";
 const initialPlayers = [
   {
     id: 1,
-    name: "David Okafor",
+    name: "Halil Bey",
     age: 18,
     position: "Striker",
     location: "Lagos, Nigeria",
@@ -28,7 +29,7 @@ const initialPlayers = [
     pace: 91,
     shooting: 88,
     passing: 74,
-    image: "DO",
+    image: "HB",
     verified: true,
     bio: "Explosive forward with a strong instinct for goal.",
     video: "https://example.com/highlight",
@@ -69,8 +70,6 @@ const initialPlayers = [
   },
 ];
 
-// Pages accessible to each role.
-// These are frontend navigation rules, not backend security.
 const ROLE_PAGES = {
   player: [
     "dashboard",
@@ -110,37 +109,63 @@ const PAGE_TITLES = {
 };
 
 export default function App() {
-  const [role, setRole] = useState("player");
-  const [page, setPage] = useState("dashboard");
+  // Authentication state
+  const [currentUser, setCurrentUser] = useState(null);
+  const [role, setRole] = useState(null);
+  const [scoutStatus, setScoutStatus] = useState(null);
 
+  // Application state
+  const [page, setPage] = useState("dashboard");
   const [players, setPlayers] = useState(initialPlayers);
   const [currentPlayer, setCurrentPlayer] = useState(initialPlayers[0]);
-
   const [chatOpen, setChatOpen] = useState(false);
   const [savedIds, setSavedIds] = useState([2]);
 
-  const allowedPages = ROLE_PAGES[role] || ROLE_PAGES.player;
+  // Handle successful frontend authentication simulation
+  const handleAuthenticated = useCallback((account) => {
+    setCurrentUser(account.user);
+    setRole(account.role);
+    setScoutStatus(account.scoutStatus || null);
+    setChatOpen(false);
+
+    // Pending scouts go directly to verification.
+    setPage(
+      account.role === "scout" ? "verification" : "dashboard"
+    );
+  }, []);
+
+  // Log out
+  const handleLogout = useCallback(() => {
+    setCurrentUser(null);
+    setRole(null);
+    setScoutStatus(null);
+    setPage("dashboard");
+    setChatOpen(false);
+  }, []);
+
+  // Pending scouts can only access verification.
+  const allowedPages =
+    role === "scout" && scoutStatus !== "verified"
+      ? ["verification"]
+      : ROLE_PAGES[role] || [];
 
   const navigate = useCallback(
     (nextPage) => {
       if (!allowedPages.includes(nextPage)) {
-        setPage("dashboard");
+        setPage(
+          role === "scout" && scoutStatus !== "verified"
+            ? "verification"
+            : "dashboard"
+        );
         return;
       }
 
       setPage(nextPage);
     },
-    [allowedPages]
+    [allowedPages, role, scoutStatus]
   );
 
-  const changeRole = useCallback((nextRole) => {
-    if (!ROLE_PAGES[nextRole]) return;
-
-    setRole(nextRole);
-    setPage("dashboard");
-    setChatOpen(false);
-  }, []);
-
+  // Add a new player profile
   const addPlayer = useCallback((player) => {
     const newPlayer = {
       ...player,
@@ -154,10 +179,10 @@ export default function App() {
 
     setPlayers((previous) => [newPlayer, ...previous]);
     setCurrentPlayer(newPlayer);
-    setRole("player");
     setPage("dashboard");
   }, []);
 
+  // Save or unsave a player
   const toggleSave = useCallback((id) => {
     setSavedIds((previous) =>
       previous.includes(id)
@@ -176,6 +201,7 @@ export default function App() {
     return title[role] || "Lunara";
   }, [page, role]);
 
+  // Render the appropriate workspace page
   const renderPage = () => {
     switch (page) {
       case "dashboard":
@@ -202,7 +228,11 @@ export default function App() {
           );
         }
 
-        return <AdminModeration players={players} />;
+        if (role === "admin") {
+          return <AdminModeration players={players} />;
+        }
+
+        return null;
 
       case "profile":
         return (
@@ -236,15 +266,27 @@ export default function App() {
     }
   };
 
+  // Show authentication before entering the application
+  if (!currentUser || !role) {
+    return (
+      <AuthPortal onAuthenticated={handleAuthenticated} />
+    );
+  }
+
+  const isPendingScout =
+    role === "scout" && scoutStatus !== "verified";
+
   return (
     <div className={`app-shell role-${role}`}>
-      <Navigation
-        role={role}
-        page={page}
-        onNavigate={navigate}
-        onRoleChange={changeRole}
-        onChat={() => setChatOpen(true)}
-      />
+      {/* Pending scouts receive a restricted verification workspace. */}
+      {!isPendingScout && (
+        <Navigation
+          role={role}
+          page={page}
+          onNavigate={navigate}
+          onChat={() => setChatOpen(true)}
+        />
+      )}
 
       <main className="main-area">
         <header className="topbar">
@@ -257,29 +299,41 @@ export default function App() {
           </div>
 
           <div className="topbar-right">
-            <span className="live-dot" />
+            {!isPendingScout && (
+              <>
+                <span className="live-dot" />
+                <span className="muted small">
+                  Opportunity starts here
+                </span>
+              </>
+            )}
 
             <span className="muted small">
-              Opportunity starts here
+              {currentUser.name}
             </span>
 
             <button
-              className="avatar-button"
-              onClick={() =>
-                navigate(role === "player" ? "profile" : "verification")
-              }
-              aria-label="Open account"
+              className="logout-button"
+              onClick={handleLogout}
+              type="button"
             >
-              {role === "player"
-                ? currentPlayer?.image || "PL"
-                : role === "scout"
-                ? "SC"
-                : "AD"}
+              Log out
             </button>
           </div>
         </header>
 
         <div className="page-content" key={`${role}-${page}`}>
+          {isPendingScout ? (
+            <div className="scout-pending-notice">
+              <h2>Scout account pending verification</h2>
+              <p>
+                Your account needs approval from the Lunara
+                administration team before you can access
+                protected scouting features.
+              </p>
+            </div>
+          ) : null}
+
           {renderPage()}
         </div>
 
@@ -291,12 +345,12 @@ export default function App() {
         </footer>
       </main>
 
-      <ChatDrawer
-        open={chatOpen}
-        onClose={() => setChatOpen(false)}
-      />
-
-      <AuthPortal />
+      {!isPendingScout && (
+        <ChatDrawer
+          open={chatOpen}
+          onClose={() => setChatOpen(false)}
+        />
+      )}
     </div>
   );
 }
