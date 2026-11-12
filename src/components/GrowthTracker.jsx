@@ -66,11 +66,6 @@ export default function GrowthTracker() {
           />
         ))}
       </section>
-
-      <p className="small muted">
-        Sample progress data for the prototype. Real tracking can be connected to
-        player-entered sessions, coach feedback and verified match records.
-      </p>
     </div>
   );
 }

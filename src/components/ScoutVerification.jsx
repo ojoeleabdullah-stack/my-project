@@ -28,7 +28,7 @@ export default function ScoutVerification() {
         <h3>{sent ? "Application received" : "Become a verified scout"}</h3>
         <p className="muted">
           {sent
-            ? "Your details have been submitted for review. This demo does not send data to a server."
+            ? "Your details have been submitted for review. The Lunara team will contact you if your account is approved."
             : "Provide your professional details so the Lunara team can review your account."}
         </p>
 

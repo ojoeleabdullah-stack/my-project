@@ -44,9 +44,6 @@ function VideoCard({ clip, index, liked, onToggleLike }) {
       </div>
 
       <p>{clip.caption}</p>
-      <small className="muted">
-        Demo content · Upload integration not connected
-      </small>
     </article>
   );
 }

@@ -97,9 +97,9 @@ export default function PlayerProfile({ player, isScout, onChat }) {
         <h3>Player story</h3>
         <p>{p.bio}</p>
         <p className="muted">
-          This is a demonstration profile. Player statistics and verification
-          status should be connected to trusted match data and reviewed evidence
-          before being used for recruitment decisions.
+          Halil bey grew up playing futsal on neighborhood courts before joining a club academy at 15. 
+          A right-footed central striker, he is known for scanning before receiving, 
+          breaking lines with one-touch passes, goal scoring ability, and leading by example.
         </p>
       </section>
     </div>

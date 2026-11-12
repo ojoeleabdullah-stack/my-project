@@ -60,10 +60,6 @@ export default function ChatDrawer({ open, onClose }) {
           />
           <button className="primary-btn">Send</button>
         </form>
-
-        <small className="muted">
-          Prototype only: messages are not sent to another user.
-        </small>
       </aside>
     </div>
   );
